@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
 interface Content {
   type: string;
@@ -10,13 +10,13 @@ interface Toasted {
   content: Content;
 }
 
-export const toastStore = defineStore("toast", {
+export const toastStore = defineStore('toast', {
   state: (): Toasted => {
     return {
       isToasted: false,
       content: {
-        type: "",
-        message: "",
+        type: '',
+        message: '',
       },
     };
   },
@@ -24,19 +24,24 @@ export const toastStore = defineStore("toast", {
     setMessageError(message: string) {
       this.isToasted = true;
       this.content = {
-        type: "error",
+        type: 'error',
         message: message,
       };
     },
     setMessageSuccess(message: string) {
       this.isToasted = true;
       this.content = {
-        type: "success",
+        type: 'success',
         message: message,
       };
     },
     closeToast() {
       this.isToasted = false;
+    },
+    autoCloseToast() {
+      setTimeout(() => {
+        this.isToasted = false;
+      }, 5000);
     },
   },
 });

@@ -1,15 +1,15 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 // @ts-ignore
-import JwtService, { destroyToken } from "@/services/jwt.service";
+import JwtService, { destroyToken } from '@/services/jwt.service';
 // @ts-ignore
-import axiosConfig from "@/services/api.js";
-import { API } from "@/utils/api";
+import axiosConfig from '@/services/api.js';
+import { API } from '@/utils/api';
 
 interface Category {
   categories: Array<any>;
 }
 
-export const categoryStore = defineStore("category", {
+export const categoryStore = defineStore('category', {
   state: (): Category => {
     return {
       categories: [],
@@ -17,13 +17,58 @@ export const categoryStore = defineStore("category", {
   },
   actions: {
     async getList() {
-      return await axiosConfig.get(API.CATEGORIES).then((data: any) => {
-        console.log(data);
-        
-        this.categories = data.data.data
-        
-        // return data.data;
-      });
+      try {
+        return await axiosConfig.get(API.CATEGORIES).then((data: any) => {
+          this.categories = data.data.data;
+          return data.data;
+        });
+      } catch (error) {
+        return error;
+      }
+    },
+    async getCategoryById(index: any) {
+      try {
+        return await axiosConfig
+          .get(`${API.CATEGORIES}/${index}`)
+          .then((data: any) => {
+            return data.data;
+          });
+      } catch (error) {
+        return error;
+      }
+    },
+    async createCategory(formData: any) {
+      try {
+        return await axiosConfig
+          .post(API.CATEGORIES, formData)
+          .then((data: any) => {
+            return data.data;
+          });
+      } catch (error) {
+        return error;
+      }
+    },
+    async updateCategory(formData: any, index: any) {
+      try {
+        return await axiosConfig
+          .put(`${API.CATEGORIES}/${index}`, formData)
+          .then((data: any) => {
+            return data.data;
+          });
+      } catch (error) {
+        return error;
+      }
+    },
+    async deleteCategory(index: any) {
+      try {
+        return await axiosConfig
+          .delete(`${API.CATEGORIES}/${index}`)
+          .then((data: any) => {
+            return data.data;
+          });
+      } catch (error) {
+        return error;
+      }
     },
   },
 });

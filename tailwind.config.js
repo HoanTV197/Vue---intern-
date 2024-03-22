@@ -11,6 +11,10 @@ export default {
       gray_02: "#585858",
       white: "#FFFFFF",
       error: "#F8285A",
+      black_01:'rgba(5, 5, 5, 0.4)',
+      red_600: 'rgb(220 38 38)',
+      red_700: 'rgb(185 28 28)',
+      gray_200: 'rgb(229 231 235)'
     },
     extend: {},
   },

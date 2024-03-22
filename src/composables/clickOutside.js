@@ -5,9 +5,10 @@ export const vClickOutside = {
         binding.value(event);
       }
     };
-    document.body.addEventListener("click", el.__ClickOutsideHandle__);
+
+    document.body.addEventListener('click', el.__ClickOutsideHandle__);
   },
   unmounted(el) {
-    document.body.removeEventListener("click", el.__ClickOutsideHandle__);
+    document.body.removeEventListener('click', el.__ClickOutsideHandle__);
   },
 };
