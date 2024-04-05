@@ -1,8 +1,8 @@
 export const API = {
-  LOGIN: 'api/auth/login',
-  LOGOUT: 'api/auth/logout',
-  CATEGORIES: 'api/categories',
-  PRODUCTS: 'api/products',
+  LOGIN: 'admin/auth/login',
+  LOGOUT: 'admin/auth/logout',
+  CATEGORIES: 'admin/categories',
+  PRODUCTS: '/admin/products',
   ORDERS: 'api/orders',
   NEWS: 'api/news'
 };

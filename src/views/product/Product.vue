@@ -8,7 +8,15 @@
     @onClick="gotoAdd"
   />
   <Content>
-    <BaseTable :headers="headers" :items="items">
+    <BaseTable :headers="headers" :items="items" >
+      <template #[`category`]="{ item }">
+        <div>
+          <span v-for="(category, index) in item.categories" :key="index">
+            {{ category.name }}
+            <span v-if="index < item.categories.length - 1">, </span>
+          </span>
+        </div>
+      </template>
       <template #[`action`]="{ item }">
         <div class="flex items-center justify-center">
           <div class="cursor-pointer p-2" @click="gotoUpdate(item.id)">
@@ -20,6 +28,10 @@
         </div>
       </template>
     </BaseTable>
+    <div class="pagination-buttons">
+      <button class="pagination-button" @click="prevPage" :disabled="currentPage <= 1">Previous</button>
+      <button class="pagination-button" @click="nextPage" :disabled="currentPage >= totalPage">Next</button>
+    </div>
   </Content>
   <div v-if="popup.isHiddenPopUp">
     <Confirm @cancelHandler="cancelHandler" @acceptHandler="acceptHandler" />
@@ -38,8 +50,7 @@ import { breadcrumbsStore } from '@/stores/breadcrumb';
 import { PENCIL, DELETE } from '@/utils/constant';
 import { productStore } from '@/stores/product';
 import { popupStore } from '@/stores/popup';
-import { ref } from 'vue';
-
+import { ref,onMounted } from 'vue';
 const router = useRouter();
 const product = productStore();
 const popup = popupStore();
@@ -113,4 +124,57 @@ const gotoAdd = () => {
 const gotoUpdate = (index) => {
   router.push(`/product/update-product/${index}`);
 };
+const currentPage = ref(1);
+const totalPage = ref(0);
+
+onMounted(async () => {
+  await fetchProducts();
+});
+
+const fetchProducts = async () => {
+  const data = await product.getProductList(currentPage.value);
+  items.value = data.data;
+  totalPage.value = data.last_page;
+};
+
+const nextPage = async () => {
+  if (currentPage.value < totalPage.value) {
+    currentPage.value++;
+    await fetchProducts();
+  }
+};
+
+const prevPage = async () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
+    await fetchProducts();
+}
+};
 </script>
+<style scoped>
+.pagination-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1em;
+}
+
+.pagination-button {
+  margin-left: 1em;
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 5px;
+  background-color: #4BBDCF;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination-button:not(:disabled):hover {
+  background-color: #2a9da7;
+}
+</style>

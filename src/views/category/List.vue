@@ -76,7 +76,8 @@ breadcrumb.setBreadcrumb(title, listBreadcrumb);
 const items = ref([]);
 const category = categoryStore();
 category.getList().then((data) => {
-  items.value = data;
+  console.log(data)
+  items.value = data.data;
 });
 const onDelete = (id) => {
   popup.setPopUp(true);
@@ -89,7 +90,8 @@ const acceptHandler = () => {
   const index = popup.index;
   category.deleteCategory(index).then((data) => {
     popup.setPopUp(false);
-    window.location.reload();
+    // Tìm và loại bỏ danh mục đã xóa khỏi danh sách hiển thị
+    items.value = items.value.filter(item => item.id !== index);
   });
 };
 const gotoAdd = () => {

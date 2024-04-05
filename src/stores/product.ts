@@ -4,25 +4,34 @@ import { API } from '@/utils/api';
 
 interface Product {
   products: Array<any>;
+  pagination: any;
 }
 
 export const productStore = defineStore('product', {
   state: (): Product => {
     return {
       products: [],
+      pagination: null,
     };
   },
   actions: {
-    async getProductList() {
+    async getProductList(pageNumber: number) {
       try {
-        return await axiosConfig.get(API.PRODUCTS).then((data: any) => {
+        return await axiosConfig.get(API.PRODUCTS, {
+            params: {
+              page: pageNumber 
+            }
+          }).then((data: any) => {
+          
           this.products = data.data.data;
-          return data.data;
+          this.pagination = data.data;
+          return data.data.data;
         });
       } catch (error) {
         return error;
       }
     },
+
     async createProduct(formData: any) {
       try {
         return await axiosConfig
