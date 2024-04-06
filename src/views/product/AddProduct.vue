@@ -132,20 +132,6 @@ configure({
 const infoProduct = ref({});
 const product = productStore();
 const image = imageStore();
-
-const createProduct = () => {
-  const imageList = image.getImageList();
-  const formData = {
-    name: infoProduct.value.name,
-    description: infoProduct.value.description,
-    price: infoProduct.value.price,
-    image_url: imageList[0],
-    origin: infoProduct.value.origin,
-  };
-  product.createProduct(formData).then(() => {
-    router.push('/product');
-  });
-};
 </script>
 <style lang="scss" scoped>
 .input-container {
