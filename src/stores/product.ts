@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
 import axiosConfig from '@/services/api.js';
 import { API } from '@/utils/api';
+import axios from 'axios';
 
 interface Product {
   products: Array<any>;
   pagination: any;
+
 }
 
 export const productStore = defineStore('product', {
@@ -15,11 +17,12 @@ export const productStore = defineStore('product', {
     };
   },
   actions: {
-    async getProductList(pageNumber: number) {
+    async getProductList(pageNumber: number, limit : number) {
       try {
-        return await axiosConfig.get(API.PRODUCTS, {
+        return await axiosConfig.get(`${API.PRODUCTS}?limit=5`, {
             params: {
-              page: pageNumber 
+              page: pageNumber,
+              limit: limit
             }
           }).then((data: any) => {
           

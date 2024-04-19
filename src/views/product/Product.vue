@@ -29,8 +29,21 @@
       </template>
     </BaseTable>
     <div class="pagination-buttons">
-      <button class="pagination-button" @click="prevPage" :disabled="currentPage <= 1">Previous</button>
-      <button class="pagination-button" @click="nextPage" :disabled="currentPage >= totalPage">Next</button>
+      <button
+        class="pagination-button"
+        @click="prevPage"
+        :disabled="currentPage === 1"
+      >
+        Prev
+      </button>
+      <span class="pagination-info">{{ currentPage }}/{{ totalPage }}</span>
+      <button
+        class="pagination-button"
+        @click="nextPage"
+        :disabled="currentPage === totalPage"
+      >
+        Next
+      </button>
     </div>
   </Content>
   <div v-if="popup.isHiddenPopUp">
@@ -154,27 +167,29 @@ const prevPage = async () => {
 <style scoped>
 .pagination-buttons {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  margin-top: 1em;
+  margin-right: 1rem;
 }
 
 .pagination-button {
-  margin-left: 1em;
-  padding: 0.5em 1em;
-  border: none;
-  border-radius: 5px;
-  background-color: #4BBDCF;
+  background-color: #4bbdcf;
   color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.pagination-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.pagination-button:hover {
+  background-color: #3aa9c2;
 }
 
-.pagination-button:not(:disabled):hover {
-  background-color: #2a9da7;
+.pagination-info {
+  margin: 0 1rem;
+  font-size: 14px;
+  color: #333;
 }
 </style>
