@@ -36,7 +36,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { breadcrumbsStore } from '@/stores/breadcrumb';
 import { PENCIL, DELETE } from '@/utils/constant';
-import { categoryStore } from '@/stores/category';
+import { useCategoryStore } from '@/stores/category';
 import { popupStore } from '@/stores/popup';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
@@ -74,9 +74,8 @@ const breadcrumb = breadcrumbsStore();
 breadcrumb.setBreadcrumb(title, listBreadcrumb);
 
 const items = ref([]);
-const category = categoryStore();
+const category = useCategoryStore();
 category.getList().then((data) => {
-  console.log(data)
   items.value = data.data;
 });
 const onDelete = (id) => {
@@ -90,8 +89,7 @@ const acceptHandler = () => {
   const index = popup.index;
   category.deleteCategory(index).then((data) => {
     popup.setPopUp(false);
-    // Tìm và loại bỏ danh mục đã xóa khỏi danh sách hiển thị
-    items.value = items.value.filter(item => item.id !== index);
+    window.location.reload();
   });
 };
 const gotoAdd = () => {

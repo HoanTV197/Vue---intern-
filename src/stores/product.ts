@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import axiosConfig from '@/services/api.js';
 import { API } from '@/utils/api';
-import axios from 'axios';
 
 interface Product {
   products: Array<any>;

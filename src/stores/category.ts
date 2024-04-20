@@ -9,7 +9,7 @@ interface Category {
   categories: Array<any>;
 }
 
-export const categoryStore = defineStore('category', {
+export const useCategoryStore = defineStore('category', {
   state: (): Category => {
     return {
       categories: [],
