@@ -26,11 +26,13 @@ import { breadcrumbsStore } from '@/stores/breadcrumb';
 import { ARROW_RIGHT } from '@/utils/constant';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-
+import { ordersStore } from '@/stores/order';
+import { ref } from 'vue';
+ 
 const { t } = useI18n();
 const router = useRouter();
 const breadcrumb = breadcrumbsStore();
-
+ 
 const title = 'Danh sách đơn hàng';
 const listBreadcrumb = [
   {
@@ -73,40 +75,23 @@ const headers = [
     title: 'action',
   },
 ];
-const items = [
-  {
-    id: '1',
-    customer_name: 'Do Quang Phuc',
-    order_time: '18:10-18/10/2001',
-    location: 'Tân Hòa, Vũ Thư , Thái Bình',
-    total_price: '1200000',
-    status: '1',
-  },
-  {
-    id: '2',
-    customer_name: 'Do Quang Phuc',
-    order_time: '18:10-18/10/2001',
-    location: 'Tân Hòa, Vũ Thư , Thái Bình',
-    total_price: '1200000',
-    status: '2',
-  },
-  {
-    id: '3',
-    customer_name: 'Do Quang Phuc',
-    order_time: '18:10-18/10/2001',
-    location: 'Tân Hòa, Vũ Thư , Thái Bình',
-    total_price: '1200000',
-    status: '3',
-  },
-  {
-    id: '4',
-    customer_name: 'Do Quang Phuc',
-    order_time: '18:10-18/10/2001',
-    location: 'Tân Hòa, Vũ Thư , Thái Bình',
-    total_price: '1200000',
-    status: '4',
-  },
-];
+
+const order = ordersStore();
+
+const items = ref([]);
+
+order.getOrderList().then((data) => {
+  data.data.map(item=>{
+    items.value.push({
+      id: item.id,
+      customer_name: item.user.first_name + ' ' + item.user.last_name,
+      location: item.purchase_place,
+      order_time: item.order_date,
+      total_price: item.total_price,
+      status: item.status,
+    });
+  })
+});
 
 const gotoUpdate = (id) => {
   router.push(`/order/order-detail/${id}`);

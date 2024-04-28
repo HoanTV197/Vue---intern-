@@ -23,7 +23,7 @@
             :placeholder="'Giá sản phẩm'"
             name="Product price"
             :classCustom="'lg:h-[44px] md:h-[35px] h-[30px] lg:w-[230px] md:w-[200px] w-[160px]'"
-            v-model="infoProduct.price"
+            v-model.number="infoProduct.price"
             rules="required"
           />
         </div>
@@ -33,14 +33,15 @@
           <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
             >Loại của sản phẩm</label
           >
-          <InputText
-            :placeholder="'Loại của sản phẩm'"
-            name="Product category"
-            :classCustom="'lg:h-[44px] md:h-[40px] h-[30px] lg:w-[430px] w-[300px]'"
-            v-model="infoProduct.category"
-            rules="required"
-          />
+          <div class="custom-select">
+            <select v-model="infoProduct.category" multiple>
+              <option v-for="item in items" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </option>
+            </select>
+          </div>
         </div>
+
         <div class="input-container">
           <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
             >Xuất xứ sản phẩm</label
@@ -100,7 +101,14 @@ import { useRouter } from 'vue-router';
 import { localize } from '@vee-validate/i18n';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
+import { useCategoryStore } from '@/stores/category';
 
+const items = ref([]);
+const category = useCategoryStore();
+
+category.getList().then((data) => {
+  items.value = data.data;
+});
 const router = useRouter();
 const title = 'Thêm sản phẩm';
 const listBreadcrumb = [
@@ -129,12 +137,80 @@ configure({
     },
   }),
 });
-const infoProduct = ref({});
+let infoProduct = ref({
+  name: '',
+  price: '',
+  category: [],
+  origin: '',
+  description: '',
+});
 const product = productStore();
 const image = imageStore();
+
+const createProduct = async () => {
+  console.log(infoProduct.value.name);
+  const cate = [];
+  cate.push(infoProduct.value.category);
+  const formData = {
+    name: infoProduct.value.name,
+    price: infoProduct.value.price,
+    categories: cate,
+    origin: infoProduct.value.origin,
+    description: infoProduct.value.description,
+   
+  };  
+  console.log(formData);
+  const response = await product.createProduct(formData);
+  console.log(response);
+  router.push('/product');
+
+};
+
 </script>
 <style lang="scss" scoped>
 .input-container {
   @apply flex flex-col p-2 my-2 w-full;
+}
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.custom-select select {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  appearance: none; /* Xóa giao diện mặc định trên các trình duyệt webkit */
+  -webkit-appearance: none;
+}
+
+.custom-select select:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.custom-select::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 4px 0 4px;
+  border-color: #000 transparent transparent transparent;
+  pointer-events: none;
 }
 </style>

@@ -124,23 +124,6 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach(async (to, _, next) => {
-//   if (!JwtService.getToken()) {
-//     if (to.name == "Login") {
-//       next();
-//     }else {
-//       next('/login');
-//     }
-//   }else {
-//     if (to.name == "Login") {
-//       next();
-//     }else {
-//       if (to.name != "Login" && to.fullPath && to.fullPath != "/") {
-//         next("/login?redirect=" + to.fullPath);
-//       }
-//     }
-//   }
-// });
 router.beforeEach(async (to, _, next) => {
   if (!JwtService.getToken()) {
     if (to.name !== 'Login') {

@@ -22,5 +22,26 @@ export const ordersStore = defineStore('order', {
         return error;
       }
     },
+
+    async getOrderById(index: any) {
+      try {
+        return await axiosConfig.get(`${API.ORDERS}/${index}`).then((data: any) => {
+          return data.data;
+        });
+      } catch (error) {
+        return error;
+      }
+    },
+
+    async updateOrder(index: any, payload: any) {
+      try {
+        return await axiosConfig.post(`${API.ORDERS}/status/${index}`, payload).then((data: any) => {
+          return data.data;
+        });
+      } catch (error) {
+        return error;
+      }
+    },
+    
   },
 });

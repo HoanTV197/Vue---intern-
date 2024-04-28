@@ -75,6 +75,7 @@ breadcrumb.setBreadcrumb(title, listBreadcrumb);
 
 const items = ref([]);
 const category = useCategoryStore();
+
 category.getList().then((data) => {
   items.value = data.data;
 });

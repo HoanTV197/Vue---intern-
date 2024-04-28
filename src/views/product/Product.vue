@@ -68,6 +68,7 @@ const router = useRouter();
 const product = productStore();
 const popup = popupStore();
 const breadcrumb = breadcrumbsStore();
+
 const items = ref([]);
 product.getProductList().then((data) => {
   items.value = data.data;

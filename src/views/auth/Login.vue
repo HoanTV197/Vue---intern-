@@ -1,7 +1,7 @@
 <template>
   <div class="w-[70%] lg:w-[60%] xl:w-[50%]">
     <div class="flex justify-center w-full">
-      <img :src="Logo" />
+      <img :src="Logo" class="w-[50%]" style="weight: 70%"/> 
     </div>
     <div class="text-center">
       <div class="text-gray font-light">
@@ -111,12 +111,6 @@ const login = async (formData) => {
         toast.setMessageSuccess(
           t(`message.${data.status}`, { field: t('login.title') }),
         );
-      }
-      if (!data.status) {
-        if (data.status !== 0) {
-          toast.setMessageError(t(`message.${data.code}`));
-        }
-        toast.setMessageError(t(`message.${data.status}`));
       }
     });
   }

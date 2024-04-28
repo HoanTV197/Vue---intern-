@@ -9,9 +9,8 @@
         <div>
           <select
             class="border-2 border-solid border-gray_200 bg-gray_01 rounded-lg h-9 w-40 px-2"
-            v-model="DELIVERED"
+            v-model="items.status"  
           >
-            <option>Change Status</option>
             <option :value="DELIVERED">
               {{ t('order.status.delivered') }}
             </option>
@@ -92,13 +91,17 @@ import Breadcrumb from '@/components/layout/Breadcrumb.vue';
 import BaseButton from '@/components/elements/BaseButton.vue';
 import { DELIVERED, SHIPPED, CANCELLED, PENDING } from '@/utils/constant';
 import { PROFILE, SHOPPING_CART } from '@/utils/constant';
-import { breadcrumbsStore } from '@/stores/breadcrumb';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter} from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
+import { ordersStore } from '@/stores/order';
+import { breadcrumbsStore } from '@/stores/breadcrumb';
+import { userStore } from '@/stores/user';
+
 
 const { t } = useI18n();
 const router = useRouter();
+const route= useRoute()
 const breadcrumb = breadcrumbsStore();
 const title = 'Chi tiết đơn hàng';
 const listBreadcrumb = [
@@ -115,44 +118,7 @@ const listBreadcrumb = [
     src: '/order/order-detail',
   },
 ];
-const items = {
-  id: '1',
-  customer_name: 'Do Quang Phuc',
-  customer_phone: '0342246428',
-  location: 'Tan Hoa , Vu Thu, Thai Binh',
-  order_time: '18:10 - 18/10/2024',
-  purchase_time: '18:10 - 20/10/2024',
-  updated_time: '20:10 - 20/10/2024',
-  total_price: '1200000',
-  status: 1,
-  product_list: [
-    {
-      product_id: '1',
-      product_name: 'Áo cái bang',
-      quantity: '5',
-      price: '100000',
-    },
-    {
-      product_id: '2',
-      product_name: 'Lá đu đủ',
-      quantity: '10 kg',
-      price: '1000000',
-    },
-    {
-      product_id: '3',
-      product_name: 'Máy tính Casio',
-      quantity: '2',
-      price: '104000',
-    },
-    {
-      product_id: '4',
-      product_name: 'Hoa anh túc',
-      quantity: '5 kg',
-      price: '1400000',
-    },
-  ],
-  staff_name: 'Do Quang Phuc',
-};
+
 const header = [
   {
     key: 'product_id',
@@ -172,7 +138,42 @@ const header = [
   },
 ];
 breadcrumb.setBreadcrumb(title, listBreadcrumb);
-const updateStatus = () => {
+
+const param = route.params.order_id;
+const order = ordersStore();
+const items = ref({});
+
+
+order.getOrderById(param).then((data) => {
+  console.log(data.data);
+  items.value = {
+    id: data.data.id,
+    customer_name: data.data.user.first_name + ' ' + data.data.user.last_name,
+    customer_phone: data.data.user.phone,
+    location: data.data.purchase_place,
+    order_time: data.data.order_date,
+    purchase_time: data.data.purchase_date,
+    updated_time: data.data.updated_at,
+    total_price: data.data.total_price,
+    status: data.data.status,
+    product_list: data.data.order_details.map((item) => {
+      return {
+        product_id: item.product_id,
+        product_name: item.product.name,
+        quantity: item.quantity,
+        price: item.product.price,
+      };
+    }),
+  }
+});
+
+const updateStatus = async () => {
+  const formData = {
+    status: items.value.status,
+  };
+  console.log(formData);
+  const response = await order.updateOrder(param, formData);
+  console.log(response);
   router.push('/order');
 };
 </script>
