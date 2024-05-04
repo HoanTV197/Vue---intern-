@@ -96,7 +96,6 @@ import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 import { ordersStore } from '@/stores/order';
 import { breadcrumbsStore } from '@/stores/breadcrumb';
-import { userStore } from '@/stores/user';
 
 
 const { t } = useI18n();

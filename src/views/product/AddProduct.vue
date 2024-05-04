@@ -23,24 +23,22 @@
             :placeholder="'Giá sản phẩm'"
             name="Product price"
             :classCustom="'lg:h-[44px] md:h-[35px] h-[30px] lg:w-[230px] md:w-[200px] w-[160px]'"
-            v-model.number="infoProduct.price"
+            v-model="infoProduct.price"
             rules="required"
           />
         </div>
       </div>
       <div class="flex md:flex-row flex-col w-full">
-        <div class="input-container">
-          <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
-            >Loại của sản phẩm</label
-          >
-          <div class="custom-select">
-            <select v-model="infoProduct.category" multiple>
-              <option v-for="item in items" :key="item.id" :value="item.id">
-                {{ item.name }}
-              </option>
-            </select>
-          </div>
-        </div>
+<div class="input-container">
+  <label class="lg:my-[10px] my-[6px] lg:text-base text-xs">Loại của sản phẩm</label>
+  <div class="custom-select">
+    <select v-model="selectedCategories" @change="updateSelectedCategories" multiple>
+
+      <option v-for="item in items" :key="item.id" :value="item.id">{{ item.name }}</option>
+    </select>
+  </div>
+</div>
+
 
         <div class="input-container">
           <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
@@ -103,6 +101,7 @@ import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 import { useCategoryStore } from '@/stores/category';
 
+
 const items = ref([]);
 const category = useCategoryStore();
 
@@ -144,6 +143,12 @@ let infoProduct = ref({
   origin: '',
   description: '',
 });
+
+let selectedCategories = ref([]);
+const updateSelectedCategories = () => {
+  infoProduct.value.category = selectedCategories.value;
+};
+
 const product = productStore();
 const image = imageStore();
 
@@ -151,14 +156,15 @@ const createProduct = async () => {
   console.log(infoProduct.value.name);
   const cate = [];
   cate.push(infoProduct.value.category);
-  const formData = {
-    name: infoProduct.value.name,
-    price: infoProduct.value.price,
-    categories: cate,
-    origin: infoProduct.value.origin,
-    description: infoProduct.value.description,
-   
-  };  
+const formData = {
+  name: infoProduct.value.name,
+  price: infoProduct.value.price,
+  categories: selectedCategories.value, // Chuyển đổi mỗi phần tử của mảng proxy thành một giá trị cụ thể
+  origin: infoProduct.value.origin,
+  description: infoProduct.value.description,
+};
+
+
   console.log(formData);
   const response = await product.createProduct(formData);
   console.log(response);
@@ -166,51 +172,11 @@ const createProduct = async () => {
 
 };
 
+
+
 </script>
 <style lang="scss" scoped>
 .input-container {
   @apply flex flex-col p-2 my-2 w-full;
-}
-
-.custom-select {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-}
-
-.custom-select select {
-  display: block;
-  width: 100%;
-  padding: 8px 16px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #495057;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  appearance: none; /* Xóa giao diện mặc định trên các trình duyệt webkit */
-  -webkit-appearance: none;
-}
-
-.custom-select select:focus {
-  outline: none;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.custom-select::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 4px 0 4px;
-  border-color: #000 transparent transparent transparent;
-  pointer-events: none;
 }
 </style>

@@ -24,17 +24,15 @@
           />
         </div>
       </div>
-      <div class="flex w-full">
+      <div class="flex w-full ">
         <div class="input-container">
           <label class="my-[10px]">Loại của sản phẩm</label>
-          <InputText
-            :placeholder="'Loại của sản phẩm'"
-            name="Product category"
-            :classCustom="'xl:h-[44px] h-[40px] xl:w-[430px] w-[300px]'"
-            v-model="infoProduct.category"
-            rules="required"
-          />
+          <div class="custom-select">
+            <select v-model="selectedCategories" @change="updateSelectedCategories" multiple>
+              <option v-for="item in items" :key="item.id" :value="item.id">{{ item.name }}</option>
+            </select>
         </div>
+      </div>
         <div class="input-container">
           <label class="my-[10px]">Xuất xứ sản phẩm</label>
           <InputText
@@ -88,6 +86,8 @@ import { useI18n } from 'vue-i18n';
 import { localize } from '@vee-validate/i18n';
 import { useRouter, useRoute } from 'vue-router';
 import UploadImage from '@/components/elements/UploadImage.vue';
+import { useCategoryStore } from '@/stores/category';
+
 
 const route = useRoute();
 const router = useRouter();
@@ -118,7 +118,13 @@ configure({
     },
   }),
 });
-const infoProduct = ref({});
+let infoProduct = ref({
+  name: '',
+  description: '',
+  categories: [],
+  price: '',
+  origin: '',
+});
 const product = productStore();
 const image = imageStore();
 
@@ -126,20 +132,34 @@ product.getProductById(route.params.product_id).then((data) => {
   infoProduct.value = data.data;
 });
 
-const onChangeValue = () => {
+const category = useCategoryStore();
+const items = ref([]);
+category.getList().then((data) => {
+  items.value = data.data;
+});
+let selectedCategories = ref([]);
+const updateSelectedCategories = () => {
+  infoProduct.value.category = selectedCategories.value;
+};
+
+const onChangeValue = async () => {
   const imageList = image.getImageList();
   const formData = {
     name: infoProduct.value.name,
     description: infoProduct.value.description,
+    category_ids: Array.from(selectedCategories.value),
     price: infoProduct.value.price,
     image_url: imageList[0],
     origin: infoProduct.value.origin,
   };
-  product.updateProduct(formData, route.params.product_id).then(() => {
-    console.log(formData);
-    console.log('success');
+  console.log(formData);
+  const result = await product.updateProduct(formData, route.params.product_id);
+  if (result) {
+    console.log('Update successful');
     router.push('/product');
-  });
+  } else {
+    console.log('Update failed');
+  }
 };
 </script>
 <style lang="scss" scoped>

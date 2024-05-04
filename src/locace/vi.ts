@@ -62,7 +62,7 @@ export default {
   logout: 'Đăng xuất',
   login: {
     description:
-      'Nền tảng Thi trắc nghiệm, Trộn và Tạo đề thi miễn phí nhiều người sử dụng nhất',
+      'Nâng tầm giấc ngủ - Nâng tầm cuộc sống',
     title: 'Đăng nhập',
     email: 'Nhập email',
     password: 'Nhập mật khẩu',
