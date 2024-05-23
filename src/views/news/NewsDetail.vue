@@ -39,6 +39,7 @@
   </Content>
   <div class="flex items-center justify-center mt-4">
     <BaseButton
+      @click="submitForm"
       :type="'submit'"
       :title="'SAVE'"
       :width="'lg:w-16 lg:text-base md:w-14 md:text-sm w-12 text-xs'"
@@ -57,9 +58,14 @@ import Tinymce from '@/components/elements/Tinymce.vue';
 import { breadcrumbsStore } from '@/stores/breadcrumb';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { newsStore } from '@/stores/news';
+import { onMounted } from 'vue';
+
 const { t } = useI18n();
 const breadcrumb = breadcrumbsStore();
 const title = 'Chỉnh sửa bài viết';
+
 const listBreadcrumb = [
   {
     title: 'Home',
@@ -75,17 +81,34 @@ const listBreadcrumb = [
   },
 ];
 
-const item = ref({
-  id: '1',
-  title: 'Mặt hàng tốt nhất ngày hôm nay. Mua ngay ',
-  author: 'Do Quang Phuc',
-  category: 'Thực phẩm , tiền bạc',
-  content:
-    'Chứng minh cho giả thuyết này được đưa ra bởi Grigori Perelman. Lời giải của ông dựa trên lý thuyết dòng Ricci của Richard Hamilton. Tuy nhiên, lời giải này chủ yếu nhờ vào sự cải tiến độc đáo của Perelman. Đồng thời bằng các công trình của Perelman xoay quanh việc phát triển lý thuyết dòng Ricci cũng giúp ông hoàn tất chứng minh giả thuyết hình học hóa của William Thurston (một dạng mạnh hơn giả thuyết Poincaré).',
-  published_time: '18:10 - 18/10/2024',
-  status: '1',
-});
-breadcrumb.setBreadcrumb(title, listBreadcrumb);
+  breadcrumb.setBreadcrumb(title, listBreadcrumb);
+
+const fetchNews = async () => {
+  try {
+    const response = await news.getNews(item.value.id);
+    item.value = response.data;
+  } catch (error) {
+    console.error(error);
+    // Hiển thị thông báo lỗi cho người dùng
+  }
+};
+
+onMounted(fetchNews);
+
+
+let item = ref({});
+
+const router = useRouter();
+const news = newsStore();
+const submitForm = async () => {
+  try {
+    await news.updateNews(item.value.id, item.value);
+    router.push('/news');
+  } catch (error) {
+    console.error(error);
+    // Hiển thị thông báo lỗi cho người dùng
+  }
+};
 </script>
 <style lang="scss" scoped>
 .input-container {

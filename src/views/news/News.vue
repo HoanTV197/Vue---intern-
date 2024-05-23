@@ -14,13 +14,17 @@
           <div class="cursor-pointer p-2" @click="gotoUpdate(item.id)">
             <Icon :type="PENCIL" />
           </div>
-          <div class="cursor-pointer p-2">
+          <div class="cursor-pointer p-2" @click="onDelete(item.id)">
             <Icon :type="DELETE" />
           </div>
         </div>
       </template>
     </BaseTable>
   </Content>
+  <div v-if="popup.isHiddenPopUp">
+    <Confirm @cancelHandler="cancelHandler" @acceptHandler="acceptHandler" />
+  </div>
+  
 </template>
 <script setup>
 import Icon from '@/components/elements/Icon.vue';
@@ -32,9 +36,15 @@ import { breadcrumbsStore } from '@/stores/breadcrumb';
 import { PENCIL, DELETE } from '@/utils/constant';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { onMounted, ref } from 'vue';
+import { newsStore } from '@/stores/news';
+import { popupStore } from '@/stores/popup';
+import Confirm from '@/components/elements/Confirm.vue';
+
 
 const { t } = useI18n();
 const router = useRouter();
+const popup = popupStore();
 const breadcrumb = breadcrumbsStore();
 const title = 'Quản lý bài viết';
 const listBreadcrumb = [
@@ -75,49 +85,49 @@ const headers = [
     align: 'text-left',
   },
   {
-    key: 'status',
-    title: t('news.status.title'),
-  },
-  {
     key: 'action',
     title: t('action'),
   },
 ];
 
-const items = [
-  {
-    id: '1',
-    title: 'Mặt hàng tốt nhất ngày hôm nay. Mua ngay ',
-    author: 'Do Quang Phuc',
-    category: 'Thực phẩm , tiền bạc',
-    published_time: '18:10 - 18/10/2024',
-    status: '1',
-  },
-  {
-    id: '2',
-    title: 'Sốc . Cả nước bàng hoàng khi biết tin này',
-    author: 'Do Quang Phuc',
-    category: 'áo quần , khuyến mãi',
-    published_time: '18:10 - 18/10/2024',
-    status: '2',
-  },
-  {
-    id: '3',
-    title: 'Nhóm nhạc nổi tiếng thế giới đã làm điều này',
-    author: 'Do Quang Phuc',
-    category: 'hoa quả, khuyến mãi',
-    published_time: '18:10 - 18/10/2024',
-    status: '2',
-  },
-  {
-    id: '4',
-    title: 'Bỏ học để làm điều này, người đàn ông đã đổi đời trong phút chốc',
-    author: 'Do Quang Phuc',
-    category: 'tiền bạc',
-    published_time: '18:10 - 18/10/2024',
-    status: '1',
-  },
-];
+const news = newsStore();
+const items = ref([]);
+
+const mapApiDataToTable = (apiData) => {
+  return apiData.map(apiItem => ({
+    id: apiItem.id,
+    title: apiItem.title,
+    author: apiItem.author,
+    category: apiItem.category,
+    published_time: apiItem.release_date, // Định dạng theo 'publish_time'
+    // Bạn có thể thêm cấu trúc dữ liệu khác cần thiết cho bảng
+  }));
+};
+onMounted(async () => {
+  try {
+    const data = await news.getNewsList();
+    items.value = mapApiDataToTable(data.data);
+  } catch (error) {
+    console.error(error);
+    // Hiển thị thông báo lỗi cho người dùng
+  }
+});
+
+// Xử lý xóa
+const onDelete = (id) => {
+  popup.setPopUp(true);
+  popup.setIndex(id);
+};
+const cancelHandler = () => {
+  popup.setPopUp(false);
+};
+const acceptHandler = () => {
+  const index = popup.index;
+  news.deleteNews(index).then((data) => {
+    popup.setPopUp(false);
+    window.location.reload();
+  });
+};
 
 const gotoUpdate = (id) => {
   router.push(`/news/news-detail/${id}`);
@@ -125,5 +135,5 @@ const gotoUpdate = (id) => {
 
 const gotoAdd = ()=>{
   router.push('/news/add-news')
-}
+};
 </script>
