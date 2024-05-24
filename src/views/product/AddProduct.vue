@@ -4,11 +4,9 @@
     <Form class="flex flex-col">
       <div class="flex w-full">
         <div class="input-container">
-          <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
-            >Tên sản phẩm</label
-          >
+          <label class="lg:my-[10px] my-[6px] lg:text-base text-xs">Tên sản phẩm</label>
           <InputText
-            :placeholder="'Tên sản phẩm'"
+            placeholder="Tên sản phẩm"
             name="Product name"
             :classCustom="'lg:h-[44px] md:h-[35px] h-[30px] lg:w-[230px] md:w-[200px] w-[160px]'"
             v-model="infoProduct.name"
@@ -16,11 +14,9 @@
           />
         </div>
         <div class="input-container">
-          <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
-            >Giá sản phẩm</label
-          >
+          <label class="lg:my-[10px] my-[6px] lg:text-base text-xs">Giá sản phẩm</label>
           <InputText
-            :placeholder="'Giá sản phẩm'"
+            placeholder="Giá sản phẩm"
             name="Product price"
             :classCustom="'lg:h-[44px] md:h-[35px] h-[30px] lg:w-[230px] md:w-[200px] w-[160px]'"
             v-model="infoProduct.price"
@@ -29,23 +25,29 @@
         </div>
       </div>
       <div class="flex md:flex-row flex-col w-full">
-<div class="input-container">
-  <label class="lg:my-[10px] my-[6px] lg:text-base text-xs">Loại của sản phẩm</label>
-  <div class="custom-select">
-    <select v-model="selectedCategories" @change="updateSelectedCategories" multiple>
-
-      <option v-for="item in items" :key="item.id" :value="item.id">{{ item.name }}</option>
-    </select>
-  </div>
-</div>
-
-
         <div class="input-container">
-          <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
-            >Xuất xứ sản phẩm</label
-          >
+          <label class="lg:my-[10px] my-[6px] lg:text-base text-xs">Loại của sản phẩm</label>
+          <div class="custom-select">
+            <VueMultiselect
+              v-model="selectedCategories"
+              :options="items"
+              :multiple="true"
+              :close-on-select="false"
+              :clear-on-select="false"
+              :preserve-search="true"
+              placeholder="Chọn loại sản phẩm"
+              label="name"
+              track-by="id"
+              :preselect-first="false"
+              @input="updateSelectedCategories"
+              :classCustom="'lg:h-[44px] md:h-[40px] h-[30px] lg:w-[430px] w-[300px]'"
+            />
+          </div>
+        </div>
+        <div class="input-container">
+          <label class="lg:my-[10px] my-[6px] lg:text-base text-xs">Xuất xứ sản phẩm</label>
           <InputText
-            :placeholder="'Xuất xứ sản phẩm'"
+            placeholder="Xuất xứ sản phẩm"
             name="Product origin"
             :classCustom="'lg:h-[44px] md:h-[40px] h-[30px] lg:w-[430px] w-[300px]'"
             v-model="infoProduct.origin"
@@ -54,29 +56,25 @@
         </div>
       </div>
       <div class="input-container">
-        <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
-          >Mô tả sản phẩm</label
-        >
+        <label class="lg:my-[10px] my-[6px] lg:text-base text-xs">Mô tả sản phẩm</label>
         <InputText
-          :placeholder="'Mô tả sản phẩm'"
+          placeholder="Mô tả sản phẩm"
           name="Product descrition"
-          :classCustom="'lg:h-[44px] md:h-[40px] h-[30px] lg:w-4/5 w-[300px] '"
+          :classCustom="'lg:h-[44px] md:h-[40px] h-[30px] lg:w-4/5 w-[300px]'"
           v-model="infoProduct.description"
           rules="required"
         />
       </div>
       <div class="input-container">
-        <label class="lg:my-[10px] my-[6px] lg:text-base text-xs"
-          >Upload hình ảnh</label
-        >
+        <label class="lg:my-[10px] my-[6px] lg:text-base text-xs">Upload hình ảnh</label>
         <UploadImage />
       </div>
     </Form>
   </Content>
   <div class="flex items-center justify-center mt-4">
     <BaseButton
-      :type="'submit'"
-      :title="'SAVE'"
+      type="submit"
+      title="SAVE"
       :width="'lg:w-16 lg:text-base md:w-14 md:text-sm w-12 text-xs'"
       :height="'lg:h-9 md:h-8 h-7'"
       :classStyle="'border rounded-xl justify-center'"
@@ -84,6 +82,7 @@
     />
   </div>
 </template>
+
 <script setup>
 import Content from '@/components/elements/Content.vue';
 import InputText from '@/components/elements/InputText.vue';
@@ -92,37 +91,27 @@ import Breadcrumb from '@/components/layout/Breadcrumb.vue';
 import UploadImage from '@/components/elements/UploadImage.vue';
 import { Form, defineRule, configure } from 'vee-validate';
 import { breadcrumbsStore } from '@/stores/breadcrumb';
-import { required, min } from '@vee-validate/rules';
+import { required } from '@vee-validate/rules';
 import { productStore } from '@/stores/product';
-import { imageStore } from '@/stores/image';
 import { useRouter } from 'vue-router';
 import { localize } from '@vee-validate/i18n';
 import { useI18n } from 'vue-i18n';
 import { ref } from 'vue';
 import { useCategoryStore } from '@/stores/category';
-
+import VueMultiselect from 'vue-multiselect';
 
 const items = ref([]);
 const category = useCategoryStore();
-
 category.getList().then((data) => {
   items.value = data.data;
 });
+
 const router = useRouter();
 const title = 'Thêm sản phẩm';
 const listBreadcrumb = [
-  {
-    title: 'Home',
-    src: '/',
-  },
-  {
-    title: 'Product',
-    src: '/product',
-  },
-  {
-    title: 'Add-Product',
-    src: '/product/add-product',
-  },
+  { title: 'Home', src: '/' },
+  { title: 'Product', src: '/product' },
+  { title: 'Add-Product', src: '/product/add-product' },
 ];
 const breadcrumb = breadcrumbsStore();
 breadcrumb.setBreadcrumb(title, listBreadcrumb);
@@ -130,13 +119,16 @@ breadcrumb.setBreadcrumb(title, listBreadcrumb);
 const { t } = useI18n();
 defineRule('required', required);
 configure({
-  generateMessage: localize('en', {
-    messages: {
-      required: t('enter_all_field'),
+  generateMessage: localize({
+    en: {
+      messages: {
+        required: t('common.required'),
+      },
     },
   }),
 });
-let infoProduct = ref({
+
+const infoProduct = ref({
   name: '',
   price: '',
   category: [],
@@ -144,39 +136,47 @@ let infoProduct = ref({
   description: '',
 });
 
-let selectedCategories = ref([]);
+const selectedCategories = ref([]);
 const updateSelectedCategories = () => {
-  infoProduct.value.category = selectedCategories.value;
+  infoProduct.value.category = selectedCategories.value.map(category => category.id);
 };
 
 const product = productStore();
-const image = imageStore();
 
 const createProduct = async () => {
-  console.log(infoProduct.value.name);
-  const cate = [];
-  cate.push(infoProduct.value.category);
-const formData = {
-  name: infoProduct.value.name,
-  price: infoProduct.value.price,
-  categories: selectedCategories.value, // Chuyển đổi mỗi phần tử của mảng proxy thành một giá trị cụ thể
-  origin: infoProduct.value.origin,
-  description: infoProduct.value.description,
+  updateSelectedCategories();
+
+  const formData = {
+    name: infoProduct.value.name,
+    description: infoProduct.value.description,
+    price: infoProduct.value.price,
+    origin: infoProduct.value.origin,
+    categories: infoProduct.value.category,
+  };
+
+  if (formData.categories.length === 0) {
+    console.error('The categories field is required.');
+    return;
+  }
+
+  try {
+    const response = await product.createProduct(formData);
+    console.log(response);
+    if (response.status === 1) {
+      router.push('/product');
+    } else {
+      console.error('API Error:', response.message, response.errors);
+    }
+  } catch (error) {
+    console.error('Error creating product:', error);
+  }
 };
-
-
-  console.log(formData);
-  const response = await product.createProduct(formData);
-  console.log(response);
-  router.push('/product');
-
-};
-
-
-
 </script>
+
 <style lang="scss" scoped>
 .input-container {
   @apply flex flex-col p-2 my-2 w-full;
 }
 </style>
+
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>

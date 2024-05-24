@@ -152,19 +152,30 @@ order.getOrderById(param).then((data) => {
     location: data.data.purchase_place,
     order_time: data.data.order_date,
     purchase_time: data.data.purchase_date,
-    updated_time: data.data.updated_at,
-    total_price: data.data.total_price,
+    updated_time: formatDate(data.data.updated_at),
+    total_price: formatPrice(data.data.total_price),
     status: data.data.status,
     product_list: data.data.order_details.map((item) => {
       return {
         product_id: item.product_id,
         product_name: item.product.name,
         quantity: item.quantity,
-        price: item.product.price,
+        price: formatPrice(item.product.price),
       };
     }),
   }
 });
+
+function formatPrice(price) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+}
+
+// format updated_at ve nam-thang-ngay
+function formatDate(date) {
+  const dateObj = new Date(date);
+  return `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}-${dateObj.getDate()}`;
+}
+
 
 const updateStatus = async () => {
   const formData = {

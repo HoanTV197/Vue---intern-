@@ -87,11 +87,17 @@ order.getOrderList().then((data) => {
       customer_name: item.user.first_name + ' ' + item.user.last_name,
       location: item.purchase_place,
       order_time: item.order_date,
-      total_price: item.total_price,
+      total_price: formatPrice(item.total_price),
       status: item.status,
     });
   })
 });
+
+
+
+function formatPrice(price) {
+  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+}
 
 const gotoUpdate = (id) => {
   router.push(`/order/order-detail/${id}`);

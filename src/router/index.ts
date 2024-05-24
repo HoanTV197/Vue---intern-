@@ -38,7 +38,7 @@ const router = createRouter({
       meta: { layout: 'LayoutDefault', key: 'add-category' },
     },
     {
-      path: '/category/update-category/:category_id',
+      path: '/category/update-category/:id',
       name: 'UpdateCategory',
       component: () => import('../views/category/UpdateCategory.vue'),
       meta: { layout: 'LayoutDefault', key: 'update-category' },

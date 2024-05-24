@@ -86,13 +86,15 @@ const onDelete = (id) => {
 const cancelHandler = () => {
   popup.setPopUp(false);
 };
+// // Xóa category khỏi danh sách hiện tại mà không cần tải lại trang
 const acceptHandler = () => {
-  const index = popup.index;
-  category.deleteCategory(index).then((data) => {
-    popup.setPopUp(false);
-    window.location.reload();
+  const id = popup.index;
+  category.deleteCategory(id).then(() => {
+    items.value = items.value.filter((item) => item.id !== id);
   });
+  popup.setPopUp(false);
 };
+
 const gotoAdd = () => {
   router.push('/category/add-category');
 };
