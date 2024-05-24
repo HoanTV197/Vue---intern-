@@ -99,8 +99,7 @@ const mapApiDataToTable = (apiData) => {
     title: apiItem.title,
     author: apiItem.author,
     category: apiItem.category,
-    published_time: apiItem.release_date, // Định dạng theo 'publish_time'
-    // Bạn có thể thêm cấu trúc dữ liệu khác cần thiết cho bảng
+    published_time: apiItem.release_date, 
   }));
 };
 onMounted(async () => {
@@ -121,12 +120,17 @@ const onDelete = (id) => {
 const cancelHandler = () => {
   popup.setPopUp(false);
 };
-const acceptHandler = () => {
+const acceptHandler = async () => {
   const index = popup.index;
-  news.deleteNews(index).then((data) => {
+  try {
+    await news.deleteNews(index);
+    // Xóa bài viết khỏi danh sách hiện tại mà không cần tải lại trang
+    items.value = items.value.filter(item => item.id !== index);
     popup.setPopUp(false);
-    window.location.reload();
-  });
+  } catch (error) {
+    console.error("Error deleting news:", error);
+    // Hiển thị thông báo lỗi cho người dùng
+  }
 };
 
 const gotoUpdate = (id) => {

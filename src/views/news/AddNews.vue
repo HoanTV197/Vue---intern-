@@ -35,7 +35,12 @@
       <div class="input-container">
         <div class="input-title">{{ t('news.content') }}</div>
         <div class="col-span-3">
-          <Tinymce v-model="item.content" />
+          <!-- khong su dung tinymce -->
+          <InputText
+            v-model="item.content"
+            name="news_content"
+            placeholder="Nội dung bài viết"   
+          />
         </div>
       </div>
     </div>

@@ -6,8 +6,8 @@ interface News {
     news: Array<any>
 }
 
-export const newsStore = defineStore('news',{
-    state: () : News => {
+export const newsStore = defineStore('news', {
+    state: (): News => {
         return {
             news: []
         }
@@ -16,32 +16,32 @@ export const newsStore = defineStore('news',{
         // CRUD article
         async getNewsList() {
             try {
-                return await axiosConfig.get(API.NEWS).then((data: any) => {
-                    this.news = data.data.data;
-                    return data.data;
-                });
+                const response = await axiosConfig.get(API.NEWS);
+                this.news = response.data.data;
+                return response.data;
             } catch (error) {
-                return error;
+                console.error("Error fetching news list:", error);
+                throw error;
             }
         },
 
         async getNewsById(index: any) {
             try {
-                return await axiosConfig.get(`${API.NEWS}/${index}`).then((data: any) => {
-                    return data.data;
-                });
+                const response = await axiosConfig.get(`${API.NEWS}/${index}`);
+                return response.data;
             } catch (error) {
-                return error;
+                console.error(`Error fetching news with ID ${index}:`, error);
+                throw error;
             }
         },
 
         async createNews(formData: any) {
             try {
-                return await axiosConfig.post(API.NEWS, formData).then((data: any) => {
-                    return data.data;
-                });
+                const response = await axiosConfig.post(API.NEWS, formData);
+                return response.data;
             } catch (error) {
-                return error;
+                console.error("Error creating news:", error);
+                throw error;
             }
         },
 
@@ -51,22 +51,20 @@ export const newsStore = defineStore('news',{
                     return data.data;
                 });
             } catch (error) {
-                return error;
+                console.error(`Error updating news with ID ${index}:`, error);
+                throw error;  // Để bắt lỗi trong component
             }
         },
+        
 
         async deleteNews(index: any) {
             try {
-                return await axiosConfig.delete(`${API.NEWS}/${index}`).then((data: any) => {
-                    return data.data;
-                });
+                const response = await axiosConfig.delete(`${API.NEWS}/${index}`);
+                return response.data;
             } catch (error) {
-                return error;
+                console.error(`Error deleting news with ID ${index}:`, error);
+                throw error;
             }
         }
-
-
-
-
     }
-})
+});

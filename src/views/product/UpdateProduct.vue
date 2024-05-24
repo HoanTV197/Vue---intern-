@@ -141,7 +141,6 @@ let selectedCategories = ref([]);
 const updateSelectedCategories = () => {
   infoProduct.value.category = selectedCategories.value;
 };
-
 const onChangeValue = async () => {
   const imageList = image.getImageList();
   const formData = {

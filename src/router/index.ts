@@ -110,9 +110,11 @@ const router = createRouter({
       meta: { layout: 'LayoutDefault', key: 'news' },
     },
     {
-      path: '/news/news-detail/:news_id',
-      name: 'NewsDetail',
-      component: () => import('../views/news/NewsDetail.vue'),
+      
+        path: '/news/news-detail/:id',
+        name: 'NewsDetail',
+        component: () => import('../views/news/NewsDetail.vue'),
+       
       meta: { layout: 'LayoutDefault', key: 'news-detail' },
     },
     {

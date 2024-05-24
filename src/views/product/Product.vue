@@ -118,6 +118,9 @@ const listBreadcrumb = [
   },
 ];
 breadcrumb.setBreadcrumb(title, listBreadcrumb);
+
+
+// xu li xoa product
 const onDelete = (id) => {
   popup.setPopUp(true);
   popup.setIndex(id);
@@ -127,17 +130,19 @@ const cancelHandler = () => {
 };
 const acceptHandler = () => {
   const index = popup.index;
-  product.deleteProduct(index).then(() => {
+  product.deleteProduct(index).then((data) => {
     popup.setPopUp(false);
     window.location.reload();
   });
 };
+
 const gotoAdd = () => {
   router.push('/product/add-product');
 };
 const gotoUpdate = (index) => {
   router.push(`/product/update-product/${index}`);
 };
+
 const currentPage = ref(1);
 const totalPage = ref(0);
 
@@ -146,9 +151,13 @@ onMounted(async () => {
 });
 
 const fetchProducts = async () => {
-  const data = await product.getProductList(currentPage.value);
-  items.value = data.data;
-  totalPage.value = data.last_page;
+  try {
+    const data = await product.getProductList(currentPage.value);
+    items.value = data.data;
+    totalPage.value = data.last_page;
+  } catch (error) {
+    console.error('Fetch products error:', error);
+  }
 };
 
 const nextPage = async () => {
