@@ -5,8 +5,8 @@
         <img :src="AvaterDefault" class="max-w-11" />
       </div>
       <div class="pl-5">
-        <div>Nguyeenx Vaan</div>
-        <div>nguyenvan@gmail.com</div>
+        <div>Admin</div>
+        <div>admin@gmail.com</div>
       </div>
     </div>
     <hr class="text-gray_01" />

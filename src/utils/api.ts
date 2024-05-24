@@ -4,5 +4,6 @@ export const API = {
   CATEGORIES: '/admin/categories',
   PRODUCTS: '/admin/products',
   ORDERS: '/admin/orders',
-  NEWS: '/admin/articles'
+  NEWS: '/admin/articles',
+  USER: 'admin/auth/me',
 };

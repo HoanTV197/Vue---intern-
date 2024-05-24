@@ -1,18 +1,18 @@
 <template>
   <Breadcrumb></Breadcrumb>
   <div class="search-container">
-    <input
-      v-model="searchQuery"
-      type="text"
-      placeholder="Search products..."
-      class="search-input"
-    />
     <BaseButton
       :title="'THÊM'"
       :width="'lg:w-[100px] w-[60px] lg:text-base md:text-sm text-xs'"
       :height="'md:h-9 h-7'"
       :classStyle="'border rounded-xl hover:bg-[#4BBDCF] my-4 p-1 justify-center'"
       @onClick="gotoAdd"
+    />
+    <input
+      v-model="searchQuery"
+      type="text"
+      placeholder="Search products..."
+      class="search-input"
     />
   </div>
   <Content>

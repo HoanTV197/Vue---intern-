@@ -35,7 +35,7 @@
       <div class="input-container">
         <div class="input-title">{{ t('news.content') }}</div>
         <div class="col-span-3">
-          <InputText
+          <Tinymce
             v-model="item.content"
             name="news_content"
             placeholder="Nội dung bài viết"   
@@ -79,6 +79,7 @@
 <script setup>
 import Content from '@/components/elements/Content.vue';
 import InputText from '@/components/elements/InputText.vue';
+import Tinymce from '@/components/elements/Tinymce.vue';
 import BaseButton from '@/components/elements/BaseButton.vue';
 import Breadcrumb from '@/components/layout/Breadcrumb.vue';
 import { breadcrumbsStore } from '@/stores/breadcrumb';

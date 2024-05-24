@@ -59,7 +59,7 @@
             </div>
             <div class="py-2">
               {{ t('staff.title') }}:
-              <span class="ml-4">{{ items.staff_name }}</span>
+              <span class="ml-4">{{ items.staff_name || "Admin" }} </span> 
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@ breadcrumb.setBreadcrumb(title, listBreadcrumb);
 
 const param = route.params.order_id;
 const order = ordersStore();
-const items = ref({});
+const items = ref({staff_name: "Admin"});
 
 
 order.getOrderById(param).then((data) => {
@@ -155,6 +155,7 @@ order.getOrderById(param).then((data) => {
     updated_time: formatDate(data.data.updated_at),
     total_price: formatPrice(data.data.total_price),
     status: data.data.status,
+    staff_name: data.data.staff ? data.data.staff.first_name + ' ' + data.data.staff.last_name : "Admin",
     product_list: data.data.order_details.map((item) => {
       return {
         product_id: item.product_id,
@@ -187,3 +188,9 @@ const updateStatus = async () => {
   router.push('/order');
 };
 </script>
+
+<style scoped>
+.py-2 .ml-4{
+  font-weight: bold;
+}
+</style>

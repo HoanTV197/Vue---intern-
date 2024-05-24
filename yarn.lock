@@ -297,10 +297,12 @@
   "resolved" "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.17.0.tgz"
   "version" "4.17.0"
 
-"@tinymce/tinymce-vue@^4.0.4":
-  "integrity" "sha512-nLd96QK8P53dCm+oF6j2D5AXoZ9MCZyjybt7B98wXo2csfKd2Ozbjv9dlnRKCdEe/JZBG4KbwBEjXlwsaAGEvg=="
-  "resolved" "https://registry.npmjs.org/@tinymce/tinymce-vue/-/tinymce-vue-4.0.4.tgz"
-  "version" "4.0.4"
+"@tinymce/tinymce-vue@^4.0.7":
+  "integrity" "sha512-1esB8wGWrjPCY+rK8vy3QB1cxwXo7HLJWuNrcyPl6LOVR+QJjub0OiV/C+TUEsLN6OpCtRv+QnIqMC5vXz783Q=="
+  "resolved" "https://registry.npmjs.org/@tinymce/tinymce-vue/-/tinymce-vue-4.0.7.tgz"
+  "version" "4.0.7"
+  dependencies:
+    "tinymce" "^5.5.0"
 
 "@types/estree@1.0.5":
   "integrity" "sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw=="
@@ -1808,10 +1810,15 @@
   dependencies:
     "any-promise" "^1.0.0"
 
-"tinymce@^7.0.1":
-  "integrity" "sha512-0a7DJnhniBx2psRuKcVQ9g4hujN6PAR4fPS0NSF1T1luH1RBDZVVEn2pGND6Ly+AW1lUm/cHOHjsasqBelMhbw=="
-  "resolved" "https://registry.npmjs.org/tinymce/-/tinymce-7.0.1.tgz"
-  "version" "7.0.1"
+"tinymce@^5.5.0":
+  "integrity" "sha512-5bkrors87X9LhYX2xq8GgPHrIgJYHl87YNs+kBcjQ5I3CiUgzo/vFcGvT3MZQ9QHsEeYMhYO6a5CLGGffR8hMg=="
+  "resolved" "https://registry.npmjs.org/tinymce/-/tinymce-5.10.9.tgz"
+  "version" "5.10.9"
+
+"tinymce@^7.1.1":
+  "integrity" "sha512-QQJKsEiM+jUfrlxNivuVUiv1jsHv4a27rub4oqajtsYQ4mFukN3hkWQrZnzVNtnPOIUsOGU2Ycem0DnEU/JKcA=="
+  "resolved" "https://registry.npmjs.org/tinymce/-/tinymce-7.1.1.tgz"
+  "version" "7.1.1"
 
 "to-regex-range@^5.0.1":
   "integrity" "sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ=="

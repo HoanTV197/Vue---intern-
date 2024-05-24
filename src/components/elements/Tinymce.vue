@@ -2,7 +2,7 @@
   <div :class="props.classCustom">
     <editor
       ref="refEditor"
-      api-key="3cg3emo2j23jib7yp9o2dsshjnlzwdx4htqn7pbd5v17p75j"
+      api-key="99rxzr58p6cwxgou09roj5adz4nmm01o55s9pxl27x66lm48"
       v-model="value"
       :init="init"
     />
@@ -25,7 +25,7 @@ const props = defineProps({
 const value = defineModel();
 const init = {
   selector: 'textarea',
-  height: 400,
+  height: 200,
   statusbar: false,
   plugins: [
     'advlist',

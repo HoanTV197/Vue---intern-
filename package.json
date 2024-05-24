@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tinymce/tinymce-vue": "^4.0.4",
+    "@tinymce/tinymce-vue": "^4.0.7",
     "@vee-validate/i18n": "^4.12.5",
     "@vee-validate/rules": "^4.12.5",
     "@vueform/multiselect": "^2.6.7",
@@ -22,7 +22,7 @@
     "path": "^0.12.7",
     "pinia": "^2.1.7",
     "prettier": "^3.2.5",
-    "tinymce": "^7.0.1",
+    "tinymce": "^7.1.1",
     "vee-validate": "^4.12.5",
     "vue": "^3.3.11",
     "vue-autosuggest": "^2.2.0",
