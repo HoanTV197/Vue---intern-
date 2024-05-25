@@ -16,7 +16,7 @@
     />
   </div>
   <Content>
-    <BaseTable :headers="headers" :items="items">
+    <BaseTable :headers="headers" :items="filteredItems">
       <template #[`category`]="{ item }">
         <div>
           <span v-for="(category, index) in item.categories" :key="index">
@@ -25,12 +25,12 @@
           </span>
         </div>
       </template>
-         <template #[`price`]="{ item }">
-      <span v-if="item.price != null">
-        {{ formatPrice(item.price) }} 
-      </span>
-      <span v-else>Đang tải...</span> 
-    </template> 
+      <template #[`price`]="{ item }">
+        <span v-if="item.price != null">
+          {{ formatPrice(item.price) }} 
+        </span>
+        <span v-else>Đang tải...</span> 
+      </template> 
       <template #[`action`]="{ item }">
         <div class="flex items-center justify-center">
           <div class="cursor-pointer p-2" @click="gotoUpdate(item.id)">
@@ -41,7 +41,6 @@
           </div>
         </div>
       </template>
-  
     </BaseTable>
     <div class="pagination-buttons">
       <button
@@ -66,7 +65,7 @@
   </div>
 </template>
 
-<script setup >
+<script setup>
 import Icon from '@/components/elements/Icon.vue';
 import Toasted from '@/components/Toasted.vue';
 import Confirm from '@/components/elements/Confirm.vue';

@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import JwtService from '../services/jwt.service';
+import CustomerList from '../views/CustomerList.vue'; // Import component mới
+
 //import {ORDER} from "@/utils/constant.ts";
 
 const router = createRouter({
@@ -122,7 +124,14 @@ const router = createRouter({
       name: 'AddNews',
       component: () => import('../views/news/AddNews.vue'),
       meta: { layout: 'LayoutDefault', key: 'add-news' },
-    }
+    },
+    {
+      path: '/customers',
+      name: 'CustomerList',
+      component: CustomerList,
+      meta: { layout: 'LayoutDefault', key: 'customer' },
+    },
+  
   ],
 });
 

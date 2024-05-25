@@ -7,6 +7,8 @@ import {
   WAREHOUSE,
   MANAGE_PROMOTION,
   MANAGE_NEWS,
+  // customer icon
+  INFO
 } from './constant';
 export const MENU = [
   {
@@ -73,6 +75,13 @@ export const MENU = [
     path: '/news',
     key: 'news',
     icon: MANAGE_NEWS,
+    active: false,
+  },
+  {
+    title: 'Danh sách khách hàng',
+    path: '/customers',
+    key: 'customer',
+    icon: INFO,
     active: false,
   },
 ];

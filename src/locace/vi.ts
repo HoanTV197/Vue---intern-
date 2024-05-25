@@ -82,4 +82,10 @@ export default {
     0: 'Không đúng tài khoản hoặc mật khẩu',
     1: '{field} thành công',
   },
+  customer: {
+    name: 'Tên khách hàng',
+    phone: 'Số điện thoại',
+    email: 'Email',
+    location: 'Địa chỉ',
+  },
 };

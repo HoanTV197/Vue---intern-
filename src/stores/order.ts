@@ -42,6 +42,22 @@ export const ordersStore = defineStore('order', {
         return error;
       }
     },
+
+    async getCustomerList() {
+      try {
+        const data = await axiosConfig.get(API.ORDERS);
+        const customers = data.data.data.map((order: any) => ({
+          id: order.user.id,
+          name: `${order.user.first_name} ${order.user.last_name}`,
+          phone: order.user.phone,
+          email: order.user.email,
+          location: order.purchase_place,
+        }));
+        return customers;
+      } catch (error) {
+        return error;
+      }
+    },
     
   },
 });

@@ -162,7 +162,8 @@ const gotoUpdate = (id) => {
 <style scoped>
 .pagination-controls {
   display: flex;
-  justify-content: right;
+  justify-content: center;
+  margin-right: -730px;
   margin-top: 1rem;
 }
 

@@ -7,7 +7,7 @@
     <BaseButton
       :type="'submit'"
       :title="'UPDATE'"
-      :width="'lg:w-16 lg:text-base md:w-14 md:text-sm w-12 text-xs'"
+      :width="'lg:w-20 lg:text-base md:w-14 md:text-sm w-12 text-xs'"
       :height="'lg:h-9 md:h-8 h-7'"
       :classStyle="'border rounded-xl justify-center'"
       @click="updateCategory"
@@ -48,10 +48,12 @@ const route = useRoute();
 const store = useCategoryStore();
 let categoryName = ref('');
 
+// hien thi category
 onMounted(async () => {
   const categoryId = route.params.id;
-  const category = await store.getCategoryById(categoryId);
-  categoryName.value = category.name;
+  const response = await store.getCategoryById(categoryId);
+  categoryName.value = response.data.name;
+  console.log(response);
 });
 
 const updateCategory = async () => {

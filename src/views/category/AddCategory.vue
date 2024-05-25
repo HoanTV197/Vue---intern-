@@ -13,7 +13,7 @@
       :title="'SAVE'"
       :width="'lg:w-16 lg:text-base md:w-14 md:text-sm w-12 text-xs'"
       :height="'lg:h-9 md:h-8 h-7'"
-      :classStyle="'border rounded-xl justify-center'"
+      :classStyle="'border rounded-xl justify-center button-save'"
       @click="createCategory"
     />
   </div>
