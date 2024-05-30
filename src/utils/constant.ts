@@ -25,6 +25,7 @@ export const UPLOAD = 'upload';
 export const PROFILE = 'profile';
 export const SHOPPING_CART = 'shopping_cart';
 export const LOADING = 'loading';
+export const CUSTOMERS = 'fa-users'; 
 // constants
 export const ACTIVE = true;
 export const INACTIVE = false;
